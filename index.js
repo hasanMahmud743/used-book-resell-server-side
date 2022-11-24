@@ -25,6 +25,10 @@ const client = new MongoClient(uri, {
 
 async function run() {
 const bookCategories = client.db('KnowledgeDB').collection('book-collection')
+const orderedList = client.db('KnowledgeDB').collection('order-collection')
+const userList = client.db('KnowledgeDB').collection('user-collection')
+
+
 
   try {
 
@@ -42,11 +46,18 @@ const bookCategories = client.db('KnowledgeDB').collection('book-collection')
       res.send(result)
     })
 
-
-    app.get('/categories', async(req, res)=>{
-      const cursor = {}
-      const result = await bookCategories.find(cursor).toArray()
+    app.post('/categories', async(req, res)=>{
+      const order = req.body
+      const result = await orderedList.insertOne(order)
       res.send(result)
+
+    })
+
+    app.post('/users', async(req, res)=>{
+      const order = req.body
+      const result = await userList.insertOne(order)
+      res.send(result)
+
     })
 
   } 
