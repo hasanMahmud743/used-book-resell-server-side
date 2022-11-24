@@ -87,6 +87,12 @@ const productList = client.db('KnowledgeDB').collection('product-collection')
       const result = await userList.find(cursor).toArray()
       res.send(result)
     })
+
+    app.get('/allBuyer', async(req, res)=>{
+      const cursor = {accountType: 'normal'}
+      const result = await userList.find(cursor).toArray()
+      res.send(result)
+    })
     
 
   } 
