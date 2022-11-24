@@ -27,6 +27,8 @@ async function run() {
 const bookCategories = client.db('KnowledgeDB').collection('book-collection')
 const orderedList = client.db('KnowledgeDB').collection('order-collection')
 const userList = client.db('KnowledgeDB').collection('user-collection')
+const productList = client.db('KnowledgeDB').collection('product-collection')
+
 
 
 
@@ -59,6 +61,33 @@ const userList = client.db('KnowledgeDB').collection('user-collection')
       res.send(result)
 
     })
+
+    app.get('/orders', async(req, res)=>{
+      const cursor = {}
+      const result = await orderedList.find(cursor).toArray()
+      res.send(result)
+    })
+
+
+    app.post('/products', async(req, res)=>{
+      const product = req.body
+      const result = await productList.insertOne(product)
+      res.send(result)
+    })
+
+
+    app.get('/products', async(req, res)=>{
+      const cursor = {}
+      const result = await productList.find(cursor).toArray()
+      res.send(result)
+    })
+
+    app.get('/allSeller', async(req, res)=>{
+      const cursor = {accountType: 'seller'}
+      const result = await userList.find(cursor).toArray()
+      res.send(result)
+    })
+    
 
   } 
   
