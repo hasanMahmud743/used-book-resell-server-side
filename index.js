@@ -24,6 +24,8 @@ const client = new MongoClient(uri, {
 
 
 async function run() {
+const bookCategories = client.db('KnowledgeDB').collection('book-collection')
+
   try {
 
     app.post('/jwt', async(req, res)=>{
@@ -31,6 +33,20 @@ async function run() {
       console.log(email)
       const token =  jwt.sign(email, 'dsfukjrtwhiufhsdjfouaoiuf', {expiresIn: '7d'})
       res.send({token})
+    })
+
+    app.get('/categories/:title', async(req, res)=>{
+      const categories = req.params.title
+      const cursor = {categories}
+      const result = await bookCategories.find(cursor).toArray()
+      res.send(result)
+    })
+
+
+    app.get('/categories', async(req, res)=>{
+      const cursor = {}
+      const result = await bookCategories.find(cursor).toArray()
+      res.send(result)
     })
 
   } 
