@@ -1,5 +1,5 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const app = express();
@@ -77,8 +77,23 @@ const productList = client.db('KnowledgeDB').collection('product-collection')
 
 
     app.get('/products', async(req, res)=>{
-      const cursor = {}
+      const email = req.query.email
+      let cursor = {}
+      if(email){
+        cursor = {email}
+      }
       const result = await productList.find(cursor).toArray()
+      res.send(result)
+    })
+
+    app.get('/allUser', async(req, res)=>{
+      const email = req.query.email
+      let cursor = {email}
+      if(email){
+        cursor = {email}
+      }
+      
+      const result = await userList.findOne(cursor)
       res.send(result)
     })
 
@@ -91,6 +106,13 @@ const productList = client.db('KnowledgeDB').collection('product-collection')
     app.get('/allBuyer', async(req, res)=>{
       const cursor = {accountType: 'normal'}
       const result = await userList.find(cursor).toArray()
+      res.send(result)
+    })
+
+    app.delete('/products/:id', async(req, res)=>{
+      const id = req.params.id
+      const cursor = {_id:ObjectId(id)}
+      const result = await productList.deleteOne(cursor)
       res.send(result)
     })
     
