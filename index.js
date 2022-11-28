@@ -123,13 +123,27 @@ async function run() {
       res.send(result);
     });
 
+    app.get('/product/:id', async(req, res)=>{
+      const id = req.params.id
+      const cursor = {_id: ObjectId(id)}
+      const result = await productList.findOne(cursor)
+      res.send(result)
+    })
+
     app.post('/advertise', async(req, res)=>{
       const advertise = req.body
       const result = advertiseCOllection.insertOne(advertise)
       res.send(result)
     })
 
-    
+    app.get('/advertise', async(req, res)=>{
+      // const advertise = req.body
+      const cursor = {}
+      const result = await advertiseCOllection.find(cursor).toArray()
+      res.send(result)
+    })
+
+
   } finally {
   }
 }
