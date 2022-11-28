@@ -24,6 +24,8 @@ async function run() {
   const orderedList = client.db("KnowledgeDB").collection("order-collection");
   const userList = client.db("KnowledgeDB").collection("user-collection");
   const productList = client.db("KnowledgeDB").collection("product-collection");
+  const advertiseCOllection = client.db("KnowledgeDB").collection("advertise-collection");
+
 
   try {
     app.post("/jwt", async (req, res) => {
@@ -120,6 +122,14 @@ async function run() {
       const result = await productList.deleteOne(cursor);
       res.send(result);
     });
+
+    app.post('/advertise', async(req, res)=>{
+      const advertise = req.body
+      const result = advertiseCOllection.insertOne(advertise)
+      res.send(result)
+    })
+
+    
   } finally {
   }
 }
